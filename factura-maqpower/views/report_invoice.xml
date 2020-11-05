@@ -4,6 +4,7 @@
         <template id="report_invoice_document_fel" inherit_id="l10n_mx_edi.report_invoice_document_mx">
             <xpath expr="//address" position="replace">
             </xpath>
+            <xpath expr="//t[@t-set='address']"  position="replace"></xpath>
             <xpath expr="//div[@class='page']" position="replace">
                 <t t-if="not o.l10n_mx_edi_cfdi_uuid and o.l10n_mx_edi_is_required()">
                     <!-- due to HTML preview for device responsive -->
@@ -44,7 +45,13 @@
                                     <t t-set="usage" t-value="xml.Receptor.get('UsoCFDI')"/>
                                     <div name="usage" t-att-class="o_grid_layout">
                                         <strong>Tipo de Comprobante:</strong>
-                                        <span t-esc="usage"/> - <span t-field="o.l10n_mx_edi_usage"/>
+                                        <span t-if="o.type == 'out_invoice' and o.state == 'posted'">I - Ingreso</span>
+                                        <span t-if="o.type == 'out_invoice' and o.state == 'draft'">I - Ingreso</span>
+                                        <span t-if="o.type == 'out_invoice' and o.state == 'cancel'">I - Ingreso</span>
+                                        <span t-if="o.type == 'out_refund'">E - Egreso</span>
+                                        <span t-if="o.type == 'in_refund'">E - Egreso</span>
+                                        <span t-if="o.type == 'in_invoice'">E - Egreso</span>
+                                        <!--<span t-esc="usage"/> - <span t-field="o.l10n_mx_edi_usage"/>-->
                                     </div>
                                 </t>
                             </t>
@@ -100,6 +107,8 @@
                         <div style="padding-top: 10px;">
                             <address t-field="o.partner_shipping_id" t-options="{&quot;widget&quot;: &quot;contact&quot;, &quot;fields&quot;: [&quot;address&quot;, &quot;name&quot;], &quot;no_marker&quot;: True}"/>
                             R.F.C. <span t-if="o.partner_id.vat" t-field="o.partner_id.vat"/>
+                            <!--<address t-field="o.invoice_origin.warehouse_id.partner_id" t-options="{&quot;widget&quot;: &quot;contact&quot;, &quot;fields&quot;: [&quot;address&quot;, &quot;name&quot;], &quot;no_marker&quot;: True}"/>
+                            R.F.C. <span t-if="o.invoice_origin.warehouse_id.partner_id.vat" t-field="o.invoice_origin.warehouse_id.partner_id.vat"/>-->
                         </div>
                     </div>
                 </div>
@@ -143,27 +152,29 @@
                             <span t-field="o.partner_id.ref"/>
                         </td>
                         <td class="text-left" style="border:1px solid;" name="origin">
-                            <span t-field="o.invoice_origin"/>
+                            <div class="col-auto mw-100 mb-2" t-if="o.ref" name="reference">
+                                <!--<strong>Reference:</strong>-->
+                                <span class="m-0" t-field="o.ref"/>
+                            </div>
+                            <!--<span t-field="o.invoice_origin"/>-->
                         </td>
-                        <td class="text-left" style="border:1px solid;" name="due_date">
-                            <span t-field="o.invoice_date_due"/>
+                        <td class="text-left" style="border:1px solid;" name="date">
+                            <span t-field="o.invoice_date"/>
                         </td>
                         <td class="text-left" style="border:1px solid;">
                             <!-- # PROVEEDOR -->
                             <!--<span t-field="o.invoice_origin"/>-->
                         </td>
                         <td class="text-left" style="border:1px solid;">
-                            <div class="col-auto mw-100 mb-2" t-if="o.ref" name="reference">
-                                <!--<strong>Reference:</strong>-->
+                            <!--<div class="col-auto mw-100 mb-2" t-if="o.ref" name="reference">
                                 <span class="m-0" t-field="o.ref"/>
-                            </div>
-                            <!--<span t-field="o.ref"/>-->
+                            </div>-->
                         </td>
                         <td class="text-left" style="border:1px solid;">
                             <span t-field="o.invoice_user_id.name"/>
                         </td>
                         <td class="text-left" style="border:1px solid;">
-                            <span t-field="o.invoice_date_due"/>
+                            <span t-field="o.invoice_date"/>
                         </td>
                     </tbody>
                 </table>
@@ -236,7 +247,7 @@
                                     <td class="text-center" style="border:1px solid;">
                                         <span t-field="line.product_uom_id" groups="uom.group_uom"/>
                                     </td>
-                                    <td name="account_invoice_line_name" style="border:1px solid;"><span t-field="line.product_id.name" t-options="{'widget': 'text'}"/></td>
+                                    <td name="account_invoice_line_name" style="border:1px solid;"><span t-field="line.name" t-options="{'widget': 'text'}"/></td>
                                     <td style="border:1px solid;" t-attf-class="text-right {{ 'd-none d-md-table-cell' if report_type == 'html' else '' }}">
                                         <span class="text-nowrap" t-field="line.price_unit"/>
                                     </td>
@@ -332,6 +343,16 @@
                 <div class="row" style="font-size: 12px;" >
                     <div class="col-6" >
                         <t t-if="o.l10n_mx_edi_cfdi_uuid">
+                            <div t-att-class="o_grid_layout">
+                                <!--<div style="font-size: 14px; width: 100%">-->
+                                SON: <span t-esc="o.currency_id.amount_to_text(o.amount_total).upper()"/>
+                            </div>
+                                <div t-att-class="o_grid_layout">
+                                    <strong>Tipo de cambio:</strong>
+                                    <span style="font-size: 10px;" t-esc="'{0:,.2f}'.format(o.currency_id.rate)"/>
+                                    <strong>Tipo de Moneda:</strong>
+                                    <span style="font-size: 10px;" t-field="o.currency_id.name"/>
+                                </div>
                             <t t-if="o.l10n_mx_edi_payment_method_id">
                                 <div t-att-class="o_grid_layout">
                                     <strong>Método de pago:</strong>
