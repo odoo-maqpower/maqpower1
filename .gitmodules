@@ -1,0 +1,3 @@
+[submodule "xmarts-addendas-XM"]
+	path = xmarts-addendas-XM
+	url = git@github.com:xmarts/xmarts-addendas-XM.git
