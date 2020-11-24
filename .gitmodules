@@ -4,3 +4,6 @@
 [submodule "xmarts-addenda-envases-universal"]
 	path = xmarts-addenda-envases-universal
 	url = git@github.com:xmarts/xmarts-addenda-envases-universal.git
+[submodule "xmarts-addenda-pepsico"]
+	path = xmarts-addenda-pepsico
+	url = git@github.com:xmarts/xmarts-addenda-pepsico.git
