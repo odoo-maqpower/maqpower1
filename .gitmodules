@@ -1,0 +1,12 @@
+[submodule "xmarts-addenda-envases-universal"]
+	path = xmarts-addenda-envases-universal
+	url = git@github.com:xmarts/xmarts-addenda-envases-universal.git
+[submodule "xmarts-addenda-pepsico"]
+	path = xmarts-addenda-pepsico
+	url = git@github.com:xmarts/xmarts-addenda-pepsico.git
+[submodule "xmarts-addenda-sanmina"]
+	path = xmarts-addenda-sanmina
+	url = git@github.com:xmarts/xmarts-addenda-sanmina.git
+[submodule "xmarts-addendas-XM"]
+	path = xmarts-addendas-XM
+	url = git@github.com:xmarts/xmarts-addendas-XM.git
