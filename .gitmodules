@@ -10,3 +10,6 @@
 [submodule "xmarts-addendas-XM"]
 	path = xmarts-addendas-XM
 	url = git@github.com:xmarts/xmarts-addendas-XM.git
+[submodule "xmarts-addenda-vitro"]
+	path = xmarts-addenda-vitro
+	url = git@github.com:xmarts/xmarts-addenda-vitro.git
