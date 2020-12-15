@@ -11,5 +11,10 @@
         </field>
     </record>
 
+    <record id="object_decimal_4" model="decimal.precision">
+            <field name="name">Account Invoice Currency 4</field>
+            <field name="digits">4</field>
+    </record>
+
 
 </odoo>

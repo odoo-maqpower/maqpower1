@@ -40,7 +40,7 @@ class ResCurrency(models.Model):
 class AccountMove(models.Model):
     _inherit = 'account.move'
 
-    purchase_currency_rate = fields.Float('Tipo de cambio compras')
+    purchase_currency_rate = fields.Float('Tipo de cambio compras', digits="Account Invoice Currency 4")
 
 
     def _recompute_tax_lines(self, recompute_tax_base_amount=False):
